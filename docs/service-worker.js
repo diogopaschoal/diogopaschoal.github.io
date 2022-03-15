@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.c6ec780e8af30647a0487fc33a4e9db2.js"
+  "/precache-manifest.02c12106a517793ac2fc1f6a53948982.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "diogopaschoal.github.io"});
