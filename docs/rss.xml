@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>diogopaschoal.com.br – Blog</title>
+    <link>https://diogopaschoal.com.br/blog</link>
+    <description>Blog</description>
+    <atom:link href="https://diogopaschoal.com.br/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Hello World</title>
+      <link>https://diogopaschoal.com.br/blog/hello-world</link>
+      <pubDate>Sun, 01 Feb 2026 00:00:00 GMT</pubDate>
+      <description>A short welcome post.</description>
+    </item>
+  </channel>
+</rss>
