@@ -1,12 +1,14 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link :to="{name: 'Home'}">Home</router-link> |
-      <router-link :to="{name: 'Apps'}">Apps</router-link> |
-      <router-link :to="{name: 'Experiences'}">Experiences</router-link> |
-      <router-link :to="{name: 'About'}">About</router-link>
+      <router-link :to="{ name: 'Home' }">Home</router-link> |
+      <router-link :to="{ name: 'Apps' }">Apps</router-link> |
+      <router-link :to="{ name: 'Experiences' }">Experiences</router-link> |
+      <router-link :to="{ name: 'Blog' }" :class="{ 'blog-active': $route.path.startsWith('/blog') }">Blog</router-link>
+      |
+      <router-link :to="{ name: 'About' }">About</router-link>
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
@@ -26,7 +28,8 @@
     font-weight: bold;
     color: #2c3e50;
 
-    &.router-link-exact-active {
+    &.router-link-exact-active,
+    &.blog-active {
       color: #42b983;
     }
   }

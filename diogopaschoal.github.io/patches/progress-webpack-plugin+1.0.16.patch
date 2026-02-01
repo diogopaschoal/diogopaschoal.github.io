@@ -1,0 +1,16 @@
+diff --git a/node_modules/progress-webpack-plugin/index.js b/node_modules/progress-webpack-plugin/index.js
+index 9ad1d1f..40d249c 100644
+--- a/node_modules/progress-webpack-plugin/index.js
++++ b/node_modules/progress-webpack-plugin/index.js
+@@ -129,10 +129,7 @@ function progressPlugin(options = {}) {
+     entries: false,
+     activeModules: false,
+     modules: true,
+-    modulesCount: 5000,
+-    dependencies: false,
+-    dependenciesCount: 10000,
+-    percentBy: 'entries'
++    modulesCount: 5000
+   })
+ }
+ 
