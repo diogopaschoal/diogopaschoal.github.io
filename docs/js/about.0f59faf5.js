@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkdiogopaschoal_github_io"]=self["webpackChunkdiogopaschoal_github_io"]||[]).push([[594],{6793:function(u,a,n){n.r(a),n.d(a,{default:function(){return r}});var o=n(641);const t={class:"about"};function i(u,a){return(0,o.uX)(),(0,o.CE)("div",t,[...a[0]||(a[0]=[(0,o.Lk)("h1",null,"This is an about page",-1)])])}var s=n(6262);const c={},e=(0,s.A)(c,[["render",i]]);var r=e}}]);
+//# sourceMappingURL=about.0f59faf5.js.map

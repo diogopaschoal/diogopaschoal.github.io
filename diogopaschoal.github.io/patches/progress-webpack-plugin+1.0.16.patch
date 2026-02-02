@@ -1,8 +1,47 @@
 diff --git a/node_modules/progress-webpack-plugin/index.js b/node_modules/progress-webpack-plugin/index.js
-index 9ad1d1f..40d249c 100644
+index 9ad1d1f..9c122a4 100644
 --- a/node_modules/progress-webpack-plugin/index.js
 +++ b/node_modules/progress-webpack-plugin/index.js
-@@ -129,10 +129,7 @@ function progressPlugin(options = {}) {
+@@ -1,8 +1,37 @@
+ let chalk = require('chalk')
+-let ProgressPlugin = require('webpack/lib/ProgressPlugin')
+ let log = require('log-update')
+ let path = require('path')
+ 
++// Try to require webpack's ProgressPlugin. In some dependency layouts webpack
++// may be nested (e.g. under @vue/cli-service) so the top-level require may
++// fail. Provide a lightweight fallback plugin when the module cannot be
++// resolved so progress reporting remains non-fatal.
++let ProgressPlugin
++try {
++  ProgressPlugin = require('webpack/lib/ProgressPlugin')
++} catch (e) {
++  ProgressPlugin = class FallbackProgressPlugin {
++    constructor(options) {
++      this.options = options || {}
++    }
++    apply(compiler) {
++      const handler = (this.options && this.options.handler) || function() {}
++      // minimal hooks: invalid -> start, and done -> finish
++      if (compiler && compiler.hooks) {
++        if (compiler.hooks.invalid && compiler.hooks.invalid.tap) {
++          compiler.hooks.invalid.tap('FallbackProgressPlugin', () => handler(0, ''))
++        }
++        if (compiler.hooks.done && compiler.hooks.done.tap) {
++          compiler.hooks.done.tap('FallbackProgressPlugin', () => handler(0.99, ''))
++        }
++      } else if (compiler && compiler.plugin) {
++        compiler.plugin('invalid', () => handler(0, ''))
++        compiler.plugin('done', () => handler(0.99, ''))
++      }
++    }
++  }
++}
++
+ const thresholder = 0.99
+ 
+ function now() {
+@@ -129,10 +158,7 @@ function progressPlugin(options = {}) {
      entries: false,
      activeModules: false,
      modules: true,

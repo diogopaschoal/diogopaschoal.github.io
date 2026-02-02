@@ -1,0 +1,27 @@
+diff --git a/node_modules/@soda/friendly-errors-webpack-plugin/src/core/extractWebpackError.js b/node_modules/@soda/friendly-errors-webpack-plugin/src/core/extractWebpackError.js
+index be2bde7..3420634 100644
+--- a/node_modules/@soda/friendly-errors-webpack-plugin/src/core/extractWebpackError.js
++++ b/node_modules/@soda/friendly-errors-webpack-plugin/src/core/extractWebpackError.js
+@@ -1,10 +1,19 @@
+ 'use strict';
+ 
+ const ErrorStackParser = require('error-stack-parser');
+-const RequestShortener = require("webpack/lib/RequestShortener");
+ 
+-// TODO: allow the location to be customized in options
+-const requestShortener = new RequestShortener(process.cwd());
++// RequestShortener location varies between webpack versions; try to require it and fall back
++let requestShortener;
++try {
++  const RequestShortener = require('webpack/lib/RequestShortener');
++  requestShortener = new RequestShortener(process.cwd());
++} catch (err) {
++  // Fallback: provide a no-op shortener compatible with readableIdentifier usage
++  requestShortener = {
++    shorten: s => s
++  };
++}
++
+ 
+ /*
+  This logic is mostly duplicated from webpack/lib/Stats.js#toJson()
