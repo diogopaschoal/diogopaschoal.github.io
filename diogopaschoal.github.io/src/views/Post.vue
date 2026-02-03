@@ -127,7 +127,7 @@ export default {
   color: #666;
 
   a {
-    color: #42b983;
+    color: #14BED9;
   }
 }
 </style>
