@@ -216,7 +216,7 @@ export default {
 }
 
 .blog-article-panel {
-  flex: 1 1 70%;
+  flex: 1 1 60%;
   min-width: 280px;
   padding: 1rem 2rem 2rem 1.5rem;
 }
