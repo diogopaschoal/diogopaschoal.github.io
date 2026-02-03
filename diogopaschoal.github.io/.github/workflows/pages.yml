@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - main
+      - improvement-in-blog-UX
+  pull_request:
+    branches:
+      - main
+      - improvement-in-blog-UX
 
 jobs:
   build:
@@ -19,6 +24,12 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Cache npm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
       - name: Install dependencies
         run: npm ci
         working-directory: '.'
@@ -29,7 +40,12 @@ jobs:
         working-directory: '.'
 
       - name: Show docs files
-        run: ls -la docs | sed -n '1,200p'
+        run: |
+          if [ -d docs ]; then
+            ls -la docs | sed -n '1,200p'
+          else
+            echo "docs/ not present"
+          fi
 
   deploy:
     needs: build
@@ -45,6 +61,3 @@ jobs:
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
-        with:
-          # uses the automatically provided GITHUB_TOKEN
-          token: ${{ secrets.GITHUB_TOKEN }}
