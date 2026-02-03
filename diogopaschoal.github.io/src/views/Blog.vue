@@ -4,32 +4,19 @@
       <aside class="blog-list-panel">
         <h2 class="blog-list-title">Posts</h2>
         <div v-if="categories.length" class="blog-categories">
-          <button
-type="button"
-class="blog-category-pill"
-:class="{ active: !categoryFilter }"
+          <button type="button" class="blog-category-pill" :class="{ active: !categoryFilter }"
             @click="categoryFilter = null">
             All
           </button>
-          <button
-v-for="cat in categories"
-:key="cat"
-type="button"
-class="blog-category-pill"
-            :class="{ active: categoryFilter === cat }"
-@click="categoryFilter = cat">
+          <button v-for="cat in categories" :key="cat" type="button" class="blog-category-pill"
+            :class="{ active: categoryFilter === cat }" @click="categoryFilter = cat">
             {{ cat }}
           </button>
         </div>
         <ul class="blog-list">
-          <li
-v-for="post in filteredPosts"
-:key="post.slug"
-class="blog-list-item"
+          <li v-for="post in filteredPosts" :key="post.slug" class="blog-list-item"
             :class="{ selected: post.slug === selectedSlug }">
-            <router-link
-:to="{ name: 'Blog', query: { post: post.slug } }"
-class="blog-list-link"
+            <router-link :to="{ name: 'Blog', query: { post: post.slug } }" class="blog-list-link"
               @click.prevent="selectPost(post.slug)">
               <span class="blog-list-item-title">{{ post.title }}</span>
               <span v-if="post.date" class="blog-list-item-date">{{ formatDate(post.date) }}</span>
