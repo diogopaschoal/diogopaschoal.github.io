@@ -22,7 +22,7 @@ if (!fs.existsSync(POSTS_DIR)) {
   fs.writeFileSync(
     path.join(DATA_DIR, "posts-data.js"),
     "export const manifest = [];\nexport const bodies = {};\n",
-    "utf8"
+    "utf8",
   );
   const rssPath = path.join(PUBLIC_DIR, "rss.xml");
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
@@ -59,7 +59,9 @@ for (const file of mdFiles) {
   const raw = fs.readFileSync(filePath, "utf8");
   const stat = fs.statSync(filePath);
   const { data: frontmatter, content } = matter(raw);
-  const title = extractFirstH1(content) || slug;
+  const title = frontmatter.title
+    ? String(frontmatter.title).trim()
+    : extractFirstH1(content) || slug;
   const date = parseDate(frontmatter.date) || stat.mtime;
   const excerpt = frontmatter.excerpt || null;
   const categories = Array.isArray(frontmatter.categories)
@@ -67,7 +69,15 @@ for (const file of mdFiles) {
     : frontmatter.categories
     ? [frontmatter.categories]
     : [];
-  const html = marked(content);
+  // Use marked lexer/parser to remove a leading H1 token safely (AST-like).
+  const tokens = marked.lexer(content);
+  const firstH1Index = tokens.findIndex(
+    (t) => t.type === "heading" && t.depth === 1,
+  );
+  if (firstH1Index !== -1) {
+    tokens.splice(firstH1Index, 1);
+  }
+  const html = marked.parser(tokens);
   manifest.push({
     slug,
     title,
@@ -95,23 +105,23 @@ function formatManifest(arr) {
     .map(
       (p) =>
         `  {\n    slug: ${esc(p.slug)},\n    title: ${esc(
-          p.title
+          p.title,
         )},\n    date: ${esc(p.date)},\n    excerpt: ${esc(
-          p.excerpt
+          p.excerpt,
         )},\n    categories: [\n${p.categories
           .map((c) => `      ${esc(c)},\n`)
-          .join("")}    ],\n  },`
+          .join("")}    ],\n  },`,
     )
     .join("\n");
 }
 function formatBodies(obj) {
   const entries = Object.entries(obj).map(
-    ([k, v]) => `  ${esc(k)}: ${esc(v)},`
+    ([k, v]) => `  ${esc(k)}: ${esc(v)},`,
   );
   return entries.length ? `{\n${entries.join("\n")}\n}` : "{}";
 }
 const jsContent = `export const manifest = [\n${formatManifest(
-  manifest
+  manifest,
 )}\n];\nexport const bodies = ${formatBodies(bodies)};\n`;
 fs.writeFileSync(path.join(DATA_DIR, "posts-data.js"), jsContent, "utf8");
 
@@ -123,7 +133,7 @@ const rssItems = manifest
       <link>${SITE_BASE}/blog/${p.slug}</link>
       <pubDate>${new Date(p.date).toUTCString()}</pubDate>
       ${p.excerpt ? `<description>${escapeXml(p.excerpt)}</description>` : ""}
-    </item>`
+    </item>`,
   )
   .join("\n");
 
@@ -150,5 +160,5 @@ ${rssItems}
 fs.writeFileSync(path.join(PUBLIC_DIR, "rss.xml"), rss, "utf8");
 
 console.log(
-  `Built ${manifest.length} posts -> src/data/posts-data.js, public/rss.xml`
+  `Built ${manifest.length} posts -> src/data/posts-data.js, public/rss.xml`,
 );
