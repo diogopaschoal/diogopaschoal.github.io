@@ -131,7 +131,8 @@ export default {
 
 .blog-layout {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
   min-height: 60vh;
 }
 
@@ -165,8 +166,8 @@ export default {
   cursor: pointer;
 
   &.active {
-    background: #42b983;
-    border-color: #42b983;
+    background: #14BED9;
+    border-color: #14BED9;
     color: #fff;
   }
 }
@@ -181,7 +182,7 @@ export default {
   margin-bottom: 0.25rem;
 
   &.selected .blog-list-link {
-    color: #42b983;
+    color: #14BED9;
     font-weight: bold;
   }
 }
@@ -193,7 +194,7 @@ export default {
   text-decoration: none;
 
   &:hover {
-    color: #42b983;
+    color: #14BED9;
   }
 }
 
@@ -216,7 +217,7 @@ export default {
 }
 
 .blog-article-panel {
-  flex: 1 1 60%;
+  flex: 1 0 70%;
   min-width: 280px;
   padding: 1rem 2rem 2rem 1.5rem;
 }

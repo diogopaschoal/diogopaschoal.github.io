@@ -13,6 +13,10 @@
 </template>
 
 <style lang="less">
+:root {
+  --primary: #14BED9;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -30,7 +34,7 @@
 
     &.router-link-exact-active,
     &.blog-active {
-      color: #42b983;
+      color: #14BED9;
     }
   }
 }
